@@ -20,7 +20,7 @@ const puppeteer = require('puppeteer');
   console.log(course_name_and_urls)
 
   for (const [name, url] of course_name_and_urls) {
-    console.log(`stargt --- ${name}`)
+    console.log(`start --- ${name}`)
 
     await page.goto(url, { waitUntil: 'domcontentloaded' })
     await page.waitFor('div.u-list.has-linked-children > li > a')
