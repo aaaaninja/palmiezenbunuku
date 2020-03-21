@@ -6,8 +6,8 @@ module.exports = {
             accounts: {
                 default: {
                     // ↑ account label
-                    username: 'main', // or () => 'main'
-                    password: 'password1',
+                    username: process.env.DEF_USERNAME, // or () => 'main'
+                    password: process.env.DEF_PASSWORD,
                 },
                 sub: {
                     // ↑ account label
