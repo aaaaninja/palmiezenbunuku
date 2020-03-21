@@ -26,6 +26,19 @@ const puppeteer = require('puppeteer');
     await page.waitFor('div.u-list.has-linked-children > li > a')
     const chapter_name_and_urls = await page.$$eval('div.u-list.has-linked-children > li > a', chapter_list => chapter_list.map(chapter => [chapter.querySelector('p').textContent, chapter.href]))
     console.log(chapter_name_and_urls)
+    for (const [chapter_name, chapter_url] of chapter_name_and_urls) {
+      console.log(`start --- --- ${chapter_name}`)
+
+      await page.goto(chapter_url, { waitUntil: 'domcontentloaded' })
+      await page.waitFor('div[data-react-class="App.Chapter"]')
+      const [section, lesson] =
+        JSON.parse(await page.$eval('div[data-react-class="App.Chapter"]', el => el.getAttribute('data-react-props')))
+            .chapter
+            .chapter
+            .class_headers
+      console.log(section.sections, lesson.sections)
+      console.log(`end --- --- ${chapter_name}`)
+    }
 
     console.log(`end --- ${name}`)
   }
