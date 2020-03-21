@@ -7,22 +7,12 @@ const puppeteer = require('puppeteer');
     }
   )
   const page = await browser.newPage();
-  await page.goto('https://example.com');
-
-  // Get the "viewport" of the page, as reported by the page.
-  const elss = await page.$$eval('h1', els => {})
-  const els = await page.$$('h1')
-  console.log(await (await els[0].getProperty('textContent')).jsonValue())
+  await page.goto('https://www.nnn.ed.nico/oauth_login?next_url=https://www.nnn.ed.nico/home&target_type=niconico', { waitUntil: 'domcontentloaded' })
+  await page.type('input#input__mailtel', process.env.DEF_USERNAME)
+  await page.type('input#input__password', process.env.DEF_PASSWORD)
   debugger;
-  const dimensions = await page.evaluate(() => {
-    return {
-      width: document.documentElement.clientWidth,
-      height: document.documentElement.clientHeight,
-      deviceScaleFactor: window.devicePixelRatio
-    };
-  });
+  await page.click('input#login__submit')
 
-  console.log('Dimensions:', dimensions);
-
+  debugger;
   await browser.close();
 })();
