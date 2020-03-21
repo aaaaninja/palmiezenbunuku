@@ -14,12 +14,12 @@ const puppeteer = require('puppeteer');
   await page.waitFor('a.sc-bdVaJa.gtVQmG')
   await page.waitFor(3000)
 
-  const name_and_urls = await page.$$eval('a.sc-bdVaJa.gtVQmG', course_list => {
+  const course_name_and_urls = await page.$$eval('a.sc-bdVaJa.gtVQmG', course_list => {
     return course_list.map(course => [course.querySelector('div.sc-bdVaJa.gRaSAC').textContent, course.href])
   })
-  console.log(name_and_urls)
+  console.log(course_name_and_urls)
 
-  for (const [name, url] of name_and_urls) {
+  for (const [name, url] of course_name_and_urls) {
     console.log(`stargt --- ${name}`)
 
     await page.goto(url, { waitUntil: 'domcontentloaded' })
