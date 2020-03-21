@@ -19,6 +19,17 @@ const puppeteer = require('puppeteer');
   })
   console.log(name_and_urls)
 
+  for (const [name, url] of name_and_urls) {
+    console.log(`stargt --- ${name}`)
+
+    await page.goto(url, { waitUntil: 'domcontentloaded' })
+    await page.waitFor('div.u-list.has-linked-children > li > a')
+    const chapters = await page.$$eval('div.u-list.has-linked-children > li > a', chapter_list => chapter_list.map(chapter => chapter.href))
+    console.log(chapters)
+
+    console.log(`end --- ${name}`)
+  }
+
   debugger;
   await browser.close();
 })();
