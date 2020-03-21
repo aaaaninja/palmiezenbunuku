@@ -24,7 +24,7 @@ const puppeteer = require('puppeteer');
 
     await page.goto(url, { waitUntil: 'domcontentloaded' })
     await page.waitFor('div.u-list.has-linked-children > li > a')
-    const chapters = await page.$$eval('div.u-list.has-linked-children > li > a', chapter_list => chapter_list.map(chapter => chapter.href))
+    const chapter_name_and_urls = await page.$$eval('div.u-list.has-linked-children > li > a', chapter_list => chapter_list.map(chapter => [chapter.querySelector('p').textContent, chapter.href]))
     console.log(chapters)
 
     console.log(`end --- ${name}`)
