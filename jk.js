@@ -10,8 +10,9 @@ const puppeteer = require('puppeteer');
   await page.goto('https://www.nnn.ed.nico/oauth_login?next_url=https://www.nnn.ed.nico/home&target_type=niconico', { waitUntil: 'domcontentloaded' })
   await page.type('input#input__mailtel', process.env.DEF_USERNAME)
   await page.type('input#input__password', process.env.DEF_PASSWORD)
-  debugger;
   await page.click('input#login__submit')
+  await page.waitFor('a.sc-bdVaJa.gtVQmG')
+  await page.waitFor(3000)
 
   debugger;
   await browser.close();
