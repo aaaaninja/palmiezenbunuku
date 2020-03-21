@@ -1,7 +1,11 @@
 const puppeteer = require('puppeteer');
 
 (async () => {
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch(
+    { headless: false
+    , devtools: true
+    }
+  )
   const page = await browser.newPage();
   await page.goto('https://example.com');
 
@@ -9,6 +13,7 @@ const puppeteer = require('puppeteer');
   const elss = await page.$$eval('h1', els => {})
   const els = await page.$$('h1')
   console.log(await (await els[0].getProperty('textContent')).jsonValue())
+  debugger;
   const dimensions = await page.evaluate(() => {
     return {
       width: document.documentElement.clientWidth,
