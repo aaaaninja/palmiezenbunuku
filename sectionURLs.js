@@ -3,7 +3,7 @@ const fs = require('fs').promises;
 
 (async () => {
   const browser = await puppeteer.launch(
-    { headless: false
+    { headless: true
     , devtools: true
     }
   )
@@ -40,6 +40,16 @@ const fs = require('fs').promises;
       section.sections.forEach(section_content => console.log(section_content.content_url))
       for (const section_content of section.sections) {
         await fs.writeFile(`${section_content.title.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}.json`, JSON.stringify(section_content))
+        await page.goto(section_content.content_url, { waitUntil: 'networkidle2' }) // こんな感じのurl => https://www.nnn.ed.nico/contents/links/90253?content_type=n-yobi or https://www.nnn.ed.nico/contents/guides/2158/content (こっちはid)
+        await page.waitFor(2000)
+        const content_height = await page.evaluate(() => document.querySelector('div.container').scrollHeight) // ほんとは `document.documentElement.offsetHeight` ってやりたいんだけど、nはなんかこれじゃ取れなかった (githubとかは可)
+        await page.pdf( // https://github.com/puppeteer/puppeteer/issues/475
+          { path: `${section_content.title.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}.pdf`
+          , printBackground: true
+          , margin: "none"
+          , height: `${content_height + 1}px`
+          }
+        )
       }
       console.log(`end --- --- ${chapter_name}`)
     }
