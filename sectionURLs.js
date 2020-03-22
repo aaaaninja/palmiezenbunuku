@@ -60,3 +60,4 @@ const fs = require('fs').promises;
   debugger;
   await browser.close();
 })();
+//  | xargs yarn run vanilla-clipper 'https://www.nnn.ed.nico/contents/guides/2158/content'
