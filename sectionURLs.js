@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const fs = require('fs').promises;
 
 (async () => {
   const browser = await puppeteer.launch(
@@ -37,6 +38,9 @@ const puppeteer = require('puppeteer');
             .chapter
             .class_headers
       section.sections.forEach(section_content => console.log(section_content.content_url))
+      for (const section_content of section.sections) {
+        await fs.writeFile(`${section_content.title.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}.json`, JSON.stringify(section_content))
+      }
       console.log(`end --- --- ${chapter_name}`)
     }
 
