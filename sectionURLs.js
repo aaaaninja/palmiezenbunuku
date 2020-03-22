@@ -18,17 +18,17 @@ const fs = require('fs').promises;
   const course_name_and_urls = await page.$$eval('a.sc-bdVaJa.gtVQmG', course_list => {
     return course_list.map(course => [course.querySelector('div.sc-bdVaJa.gRaSAC').textContent, course.href])
   })
-  console.log(course_name_and_urls)
+  console.error(course_name_and_urls)
 
   for (const [name, url] of course_name_and_urls) {
-    console.log(`start --- ${name}`)
+    console.error(`start --- ${name}`)
 
     await page.goto(url, { waitUntil: 'domcontentloaded' })
     await page.waitFor('div.u-list.has-linked-children > li > a')
     const chapter_name_and_urls = await page.$$eval('div.u-list.has-linked-children > li > a', chapter_list => chapter_list.map(chapter => [chapter.querySelector('p').textContent, chapter.href]))
-    console.log(chapter_name_and_urls)
+    console.error(chapter_name_and_urls)
     for (const [chapter_name, chapter_url] of chapter_name_and_urls) {
-      console.log(`start --- --- ${chapter_name}`)
+      console.error(`start --- --- ${chapter_name}`)
 
       await page.goto(chapter_url, { waitUntil: 'domcontentloaded' })
       await page.waitFor('div[data-react-class="App.Chapter"]')
@@ -51,10 +51,10 @@ const fs = require('fs').promises;
           }
         )
       }
-      console.log(`end --- --- ${chapter_name}`)
+      console.error(`end --- --- ${chapter_name}`)
     }
 
-    console.log(`end --- ${name}`)
+    console.error(`end --- ${name}`)
   }
 
   await browser.close();
