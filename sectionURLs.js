@@ -41,8 +41,8 @@ const fs = require('fs').promises;
       const dir_name_content = `${name.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}/${chapter_name.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}`
       console.error(dir_name_content)
       await fs.mkdir(dir_name_content, { recursive: true })
+      await fs.writeFile(`${dir_name_content}/sections.json`, JSON.stringify(section))
       for (const section_content of section.sections) {
-        await fs.writeFile(`${dir_name_content}/${section_content.title.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}.json`, JSON.stringify(section_content))
         await page.goto(section_content.content_url, { waitUntil: 'networkidle2' }) // こんな感じのurl => https://www.nnn.ed.nico/contents/links/90253?content_type=n-yobi or https://www.nnn.ed.nico/contents/guides/2158/content (こっちはid)
         await page.waitFor(2000)
         const content_height = await page.evaluate(() => document.querySelector('div.container').scrollHeight) // ほんとは `document.documentElement.offsetHeight` ってやりたいんだけど、nはなんかこれじゃ取れなかった (githubとかは可)
