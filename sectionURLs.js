@@ -57,7 +57,6 @@ const fs = require('fs').promises;
     console.log(`end --- ${name}`)
   }
 
-  debugger;
   await browser.close();
 })();
 //  | xargs yarn run vanilla-clipper 'https://www.nnn.ed.nico/contents/guides/2158/content'
