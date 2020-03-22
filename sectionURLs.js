@@ -36,7 +36,7 @@ const puppeteer = require('puppeteer');
             .chapter
             .chapter
             .class_headers
-      console.log(section.sections, lesson.sections)
+      section.sections.forEach(section_content => console.log(section_content.content_url))
       console.log(`end --- --- ${chapter_name}`)
     }
 
