@@ -41,14 +41,8 @@ const target_chapter_url = process.argv[2]
     for (const { content_url } of section.sections.filter(el => el.resource_type === 'movie')) {
       await page.goto(content_url, { waitUntil: 'networkidle2' }) // こんな感じのurl => https://www.nnn.ed.nico/contents/links/90253?content_type=n-yobi or https://www.nnn.ed.nico/contents/guides/2158/content (こっちはid)
       await page.waitFor(2000)
-      const content_height = await page.evaluate(() => document.querySelector('div.container').scrollHeight) // ほんとは `document.documentElement.offsetHeight` ってやりたいんだけど、nはなんかこれじゃ取れなかった (githubとかは可)
-      await page.pdf( // https://github.com/puppeteer/puppeteer/issues/475
-        { path: `${dir_name_content}/${section_content.title.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}.pdf`
-        , printBackground: true
-        , margin: "none"
-        , height: `${content_height + 1}px`
-        }
-      )
+
+      await page.$$eval('#movie > source', ([_, source]) => console.log(source.src))
     }
     console.error(`end --- --- ${chapter_name}`)
   }
