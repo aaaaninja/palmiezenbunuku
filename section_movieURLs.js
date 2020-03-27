@@ -33,12 +33,12 @@ const target_chapter_url = process.argv[2]
           .chapter
           .chapter
           .class_headers
-    section.sections.filter(el => el.resource_type === 'guide').forEach(section_content => console.log(section_content.content_url)) // ここで出力されたものがvanilla-clipperによって処理される
+    section.sections.filter(el => el.resource_type === 'movie').forEach(section_content => console.log(section_content.content_url))
     const dir_name_content = `${name.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}/${chapter_name.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}`
     console.error(dir_name_content)
     await fs.mkdir(dir_name_content, { recursive: true })
     await fs.writeFile(`${dir_name_content}/sections.json`, JSON.stringify(section))
-    for (const section_content of section.sections.filter(el => el.resource_type === 'guide')) {
+    for (const section_content of section.sections.filter(el => el.resource_type === 'movie')) {
       await page.goto(section_content.content_url, { waitUntil: 'networkidle2' }) // こんな感じのurl => https://www.nnn.ed.nico/contents/links/90253?content_type=n-yobi or https://www.nnn.ed.nico/contents/guides/2158/content (こっちはid)
       await page.waitFor(2000)
       const content_height = await page.evaluate(() => document.querySelector('div.container').scrollHeight) // ほんとは `document.documentElement.offsetHeight` ってやりたいんだけど、nはなんかこれじゃ取れなかった (githubとかは可)
@@ -56,4 +56,3 @@ const target_chapter_url = process.argv[2]
   console.error(`end --- ${target_chapter_url}`)
   await browser.close();
 })();
-//  | xargs yarn run vanilla-clipper 'https://www.nnn.ed.nico/contents/guides/2158/content'
