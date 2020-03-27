@@ -37,28 +37,23 @@ const fs = require('fs').promises;
             .chapter
             .chapter
             .class_headers
-      section.sections.forEach(section_content => console.log(section_content.content_url))
-      const dir_name_content = `${name.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}/${chapter_name.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}`
-      console.error(dir_name_content)
-      await fs.mkdir(dir_name_content, { recursive: true })
-      await fs.writeFile(`${dir_name_content}/sections.json`, JSON.stringify(section))
-      for (const section_content of section.sections) {
-        await page.goto(section_content.content_url, { waitUntil: 'networkidle2' }) // こんな感じのurl => https://www.nnn.ed.nico/contents/links/90253?content_type=n-yobi or https://www.nnn.ed.nico/contents/guides/2158/content (こっちはid)
+//
+      await fs.writeFile(`lessons.json`, JSON.stringify(lesson))
+      for (const lesson_content of lesson.sections) {
+        await page.goto(`https://www.nnn.ed.nico/lessons/${lesson_content.id}`, { waitUntil: 'networkidle2' }) // こんな感じのurl => https://www.nnn.ed.nico/contents/links/90253?content_type=n-yobi or https://www.nnn.ed.nico/lessons/4526123 (こっちはid)
         await page.waitFor(2000)
-        const content_height = await page.evaluate(() => document.querySelector('div.container').scrollHeight) // ほんとは `document.documentElement.offsetHeight` ってやりたいんだけど、nはなんかこれじゃ取れなかった (githubとかは可)
-        await page.pdf( // https://github.com/puppeteer/puppeteer/issues/475
-          { path: `${dir_name_content}/${section_content.title.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}.pdf`
-          , printBackground: true
-          , margin: "none"
-          , height: `${content_height + 1}px`
-          }
+
+        console.log( // こんな感じに => https://cdn.fccc.info/MbQa/soroban/42e0e48f88c8ec6dbea9ebf3ad7febcf/soroban-lesson-482528546/movie-1m-private-public.m3u8
+          await page.$eval('video', video => video.firstChild.src.replace(/[^\/]+m3u8\?.*/, 'movie-1m-private-public.m3u8'))
         )
       }
       console.error(`end --- --- ${chapter_name}`)
     }
+//
 
     console.error(`end --- ${name}`)
   }
 
   await browser.close();
 })();
+// | xargs --replace ffmpeg -i "{}" -movflags faststart -c copy  rec.mp4
