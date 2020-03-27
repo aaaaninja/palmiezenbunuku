@@ -39,8 +39,8 @@ const fs = require('fs').promises;
             .class_headers
 //
       await fs.writeFile(`lessons.json`, JSON.stringify(lesson))
-      for (const lesson_content of lesson.sections) {
-        await page.goto(`https://www.nnn.ed.nico/lessons/${lesson_content.id}`, { waitUntil: 'networkidle2' }) // こんな感じのurl => https://www.nnn.ed.nico/contents/links/90253?content_type=n-yobi or https://www.nnn.ed.nico/lessons/4526123 (こっちはid)
+      for (const { id } of lesson.sections) {
+        await page.goto(`https://www.nnn.ed.nico/lessons/${id}`, { waitUntil: 'networkidle2' }) // こんな感じのurl => https://www.nnn.ed.nico/contents/links/90253?content_type=n-yobi or https://www.nnn.ed.nico/lessons/4526123 (こっちはid)
         await page.waitFor(2000)
 
         console.log( // こんな感じに => https://cdn.fccc.info/MbQa/soroban/42e0e48f88c8ec6dbea9ebf3ad7febcf/soroban-lesson-482528546/movie-1m-private-public.m3u8
