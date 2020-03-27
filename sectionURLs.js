@@ -33,7 +33,7 @@ const target_chapter_url = process.argv[2]
           .chapter
           .chapter
           .class_headers
-    section.sections.filter(el => el.resource_type === 'guide').forEach(section_content => console.log(section_content.content_url))
+    section.sections.filter(el => el.resource_type === 'guide').forEach(section_content => console.log(section_content.content_url)) // ここで出力されたものがvanilla-clipperによって処理される
     const dir_name_content = `${name.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}/${chapter_name.replace(/[(\\|/|:|\\*|?|\"|<|>|\\\\|)]/g, '')}`
     console.error(dir_name_content)
     await fs.mkdir(dir_name_content, { recursive: true })
