@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "puppeteer": "^2.1.1",
+    "m3u8-parser": "^4.4.0",
+    "puppeteer": "^3.0.2",
     "vanilla-clipper": "^0.2.1"
   }
 }
