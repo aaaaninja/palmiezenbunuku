@@ -15,11 +15,6 @@ const parser = new m3u8Parser.Parser();
     '--disable-site-isolation-trials'
   ] })
   const page = await browser.newPage();
-  await page.setRequestInterception(true);
-  page.on('request', inter_req => {
-    if (inter_req.url().includes('master.json')) { console.log(inter_req.url()) }
-    inter_req.continue()
-  })
 
   await page.goto('https://www.palmie.jp/users/new', { waitUntil: ["networkidle2", "domcontentloaded"] })
   await page.click('.common-btn-pink')
@@ -29,8 +24,14 @@ const parser = new m3u8Parser.Parser();
   await page.waitFor('footer')
   await page.reload({ waitUntil: ["networkidle2", "domcontentloaded"] });
   await page.waitFor(3000)
-  
-  await page.goto('https://www.palmie.jp/courses/185', { waitUntil: ["networkidle2", "domcontentloaded"] })
+
+  await page.setRequestInterception(true);
+  page.on('request', inter_req => {
+    if (inter_req.url().includes('master.json')) { console.log(inter_req.url()) }
+    inter_req.continue()
+  })
+
+  await page.goto('https://www.palmie.jp/courses/67', { waitUntil: ["networkidle2", "domcontentloaded"] })
   const target_url = await page.$eval('body > div.p-drawer-movable > main > div:nth-child(3) > div.l-course-show__right > div.p-course-show__buttons > a', a_link => a_link.href)
   await page.goto(pp(target_url), { waitUntil: ["networkidle2", "domcontentloaded"] })
   debugger;
