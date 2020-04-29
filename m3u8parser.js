@@ -3,7 +3,7 @@ const url = require('url');
 const axios = require('axios');
 
 const parser = new m3u8Parser.Parser();
-const master_m3u8 = "https://10vod-adaptive.akamaized.net/exp=1588092525~acl=%2F6ae95f6b-dc5f-461b-b8df-3febba05fb31%2F%2A~hmac=2de72e3c720cade26769ccdbd6d3be2340f6816a2f51ee6527d05fc8d8a3b8d2/6ae95f6b-dc5f-461b-b8df-3febba05fb31/sep/video/df0f3245,e563653a,e5cafbd7,53d14378,562cb850/master.m3u8";
+const master_m3u8 = process.argv[2]
 
 (async () => {
 const manifest = (await axios.get(master_m3u8))
