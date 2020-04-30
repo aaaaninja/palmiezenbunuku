@@ -2,7 +2,7 @@ module.exports = {
     resource: { maxSize: 50 * 1024 * 1024 },
     sites: [
         {
-            url: 'https://www.nnn.ed.nico', // site URL
+            url: 'https://www.palmie.jp', // site URL
             accounts: {
                 default: {
                     // ↑ account label
@@ -19,21 +19,25 @@ module.exports = {
                 // [action, arg1, arg2, ...]
                 [
                     'goto',
-                    'https://www.nnn.ed.nico/oauth_login?next_url=https://www.nnn.ed.nico/home&target_type=niconico',
+                    'https://www.palmie.jp/users/new',
+                ],
+                [
+                    'click',
+                    '.common-btn-pink', // selector
                 ],
                 [
                     'input',
-                    'input#input__mailtel', // selector
+                    'input#session_email', // selector
                     '$username', // -> accounts.{ACCOUNT_LABEL}.username
                 ],
                 [
                     'input',
-                    'input#input__password', // selector
+                    'input#session_password', // selector
                     '$password', // -> accounts.{ACCOUNT_LABEL}.password
                 ],
                 [
-                    'submit',
-                    'input#login__submit', // selector
+                    'click',
+                    '#main-body > div.popup-user-login-section > div > div > div.popup-user-login-content-inner > div.popup-user-form > form > div > button', // selector
                 ],
             ],
         },
