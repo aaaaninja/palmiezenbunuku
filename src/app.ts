@@ -58,15 +58,6 @@ const course_number = target_course.match(last_matcher)?.[0]
   const master_json = pp(await capture_video_URL(page))
 
   debugger;
-  await page.waitFor(90000)
-
-  await page.setRequestInterception(true);
-  page.on('request', inter_req => {
-    if (inter_req.url().includes('master.json')) { console.log(inter_req.url()) }
-    inter_req.continue()
-  })
-
-  debugger;
   await browser.close();
 })()
 //  | xargs yarn run vanilla-clipper 'https://www.nnn.ed.nico/contents/guides/2158/content'
