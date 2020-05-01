@@ -45,10 +45,12 @@ const course_number = target_course.match(last_matcher)?.[0]
   const course_kind = pp(target_chapter_url.match(/https:\/\/www.palmie.jp\/(.+)\//)?.[1]) as CourseKind// 'https://www.palmie.jp/prime_lessons/657'.match(/https:\/\/www.palmie.jp\/(.+)\//)[1] => "prime_lessons"
 
   await page.goto(pp(target_chapter_url), { waitUntil: ["networkidle2", "domcontentloaded"] })
-  const video_urls = await (async () => {
+  const [video_urls, slide_url] = await (async () => {
     switch (course_kind) {
       case 'daily_lesson_chapters':
-        return await video_URLs(page)
+        const [cur, ...urls] = pp(await video_URLs(page))
+        const slide_url = pp(await slide_URLs(page))
+        return [urls, slide_url]
 
       case 'prime_lessons':
         return 'hoge'
