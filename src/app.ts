@@ -43,5 +43,5 @@ const target_course = process.argv[2]
   await page.waitFor(90000)
 
   await browser.close();
-})();
+})()
 //  | xargs yarn run vanilla-clipper 'https://www.nnn.ed.nico/contents/guides/2158/content'
