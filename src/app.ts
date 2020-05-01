@@ -54,6 +54,10 @@ const course_number = target_course.match(last_matcher)?.[0]
 
       case 'prime_lessons':
         return 'hoge'
+
+      default:
+        const _: never = course_kind
+        return _
     }
   })()
 
