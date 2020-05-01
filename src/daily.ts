@@ -18,3 +18,8 @@ export async function video_URLs (page: Page) {
                     .map((cid) => `https://www.palmie.jp/daily_lesson_chapters/${cid}`)
 }
 
+export async function slide_URLs(page: Page) {
+  const daily_props = await page.$eval('div[data-react-props]', (el): DailyProps => JSON.parse(el.getAttribute('data-react-props') || ''))
+  return daily_props.chapter.slide.url
+}
+
