@@ -17,8 +17,8 @@ const target_course = process.argv[2]
 
   await page.goto('https://www.palmie.jp/users/new', { waitUntil: ["networkidle2", "domcontentloaded"] })
   await page.click('.common-btn-pink')
-  await page.type('input#session_email', process.env.DEF_USERNAME)
-  await page.type('input#session_password', process.env.DEF_PASSWORD)
+  await page.type('input#session_email', process.env.DEF_USERNAME as string)
+  await page.type('input#session_password', process.env.DEF_PASSWORD as string)
   await page.click('#main-body > div.popup-user-login-section > div > div > div.popup-user-login-content-inner > div.popup-user-form > form > div > button')
   await page.waitFor('footer')
   await page.reload({ waitUntil: ["networkidle2", "domcontentloaded"] });
