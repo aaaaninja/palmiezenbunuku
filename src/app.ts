@@ -1,12 +1,11 @@
-const puppeteer = require('puppeteer');
-const m3u8Parser = require('m3u8-parser');
-const fs = require('fs').promises;
-const pp = v => { console.log(v); return v }
+import puppeteer from 'puppeteer'
+import { promises as fs } from 'fs'
+function pp<T> (v: T) { console.log(v); return v }
 
-//const target_chapter_url = process.argv[2]
-const parser = new m3u8Parser.Parser();
+const target_course = process.argv[2]
+//const course_number = target_course.replace()
 
-(async () => {
+;(async () => {
   const browser = await puppeteer.launch({ headless: false, devtools: true, defaultViewport: { width: 1600, height: 1200 }, args: [
     '--no-sandbox',
     '--disable-setuid-sandbox',
@@ -25,6 +24,9 @@ const parser = new m3u8Parser.Parser();
   await page.reload({ waitUntil: ["networkidle2", "domcontentloaded"] });
   await page.waitFor(3000)
 
+  await page.goto(target_course)
+//  await fs.mkdir(`${course_number}`, { recursive: true })
+
   await page.setRequestInterception(true);
   page.on('request', inter_req => {
     if (inter_req.url().includes('master.json')) { console.log(inter_req.url()) }
@@ -32,6 +34,9 @@ const parser = new m3u8Parser.Parser();
   })
 
   await page.goto('https://www.palmie.jp/courses/67', { waitUntil: ["networkidle2", "domcontentloaded"] })
+
+  debugger;
+  // @ts-ignore
   const target_url = await page.$eval('body > div.p-drawer-movable > main > div:nth-child(3) > div.l-course-show__right > div.p-course-show__buttons > a', a_link => a_link.href)
   await page.goto(pp(target_url), { waitUntil: ["networkidle2", "domcontentloaded"] })
   debugger;
