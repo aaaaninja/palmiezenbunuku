@@ -10,8 +10,12 @@ type DailyProps = {
   dailyLessons: Array<{chapters: Array<{id: number}>}>
 }
 
+export async function extract_data_react_props(page: Page) {
+  return await page.$eval('div[data-react-props]', (el): DailyProps => JSON.parse(el.getAttribute('data-react-props') || ''))
+}
+
 export async function video_URLs (page: Page) {
-  const daily_props = await page.$eval('div[data-react-props]', (el): DailyProps => JSON.parse(el.getAttribute('data-react-props') || ''))
+  const daily_props = await extract_data_react_props(page)
   return daily_props.dailyLessons
                     .map(days => days.chapters.map(c => c.id))
                     .flat()
@@ -19,7 +23,7 @@ export async function video_URLs (page: Page) {
 }
 
 export async function slide_URLs(page: Page) {
-  const daily_props = await page.$eval('div[data-react-props]', (el): DailyProps => JSON.parse(el.getAttribute('data-react-props') || ''))
+  const daily_props = await extract_data_react_props(page)
   return daily_props.chapter.slide.url
 }
 
