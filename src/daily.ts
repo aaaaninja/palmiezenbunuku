@@ -39,7 +39,7 @@ export function capture_video_URL (page: Page): Promise<string> {
     await page.setRequestInterception(true);
     page.on('request', inter_req => {
       if (inter_req.url().includes('master.json')) { resolve(inter_req.url()) }
-      inter_req.continue()
+      inter_req.continue().catch(e => e)
     })
     await page.reload({ waitUntil: ["networkidle2", "domcontentloaded"] });
   })
