@@ -38,6 +38,9 @@ const course_number = target_course.match(last_matcher)?.[0]
   debugger;
   // @ts-ignore
   const target_chapter_url = await page.$eval('body > div.p-drawer-movable > main > div:nth-child(3) > div.l-course-show__right > div.p-course-show__buttons > a', a_link => a_link.href)
+  const course_kind: 'daily_lesson_chapters' | 'prime_lessons' = target_chapter_url.match(/https:\/\/www.palmie.jp\/(.+)\//)?.[1]
+  // 'https://www.palmie.jp/prime_lessons/657'.match(/https:\/\/www.palmie.jp\/(.+)\//)[1]
+  // => "prime_lessons"
   await page.goto(pp(target_chapter_url), { waitUntil: ["networkidle2", "domcontentloaded"] })
   debugger;
   await page.waitFor(90000)
