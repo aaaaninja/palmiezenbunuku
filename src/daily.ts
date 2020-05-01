@@ -30,3 +30,11 @@ export async function special_offer_URLs (page: Page) {
   return isHTMLLinkElement(special_offer) ? special_offer.href : ''
 }
 
+export function capture_video_URL (page: Page): Promise<string> {
+  return new Promise((resolve, reject) => {
+    page.on('request', inter_req => {
+      if (inter_req.url().includes('master.json')) { resolve(inter_req.url()) }
+      inter_req.continue()
+    })
+  })
+}
