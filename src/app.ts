@@ -39,7 +39,7 @@ const course_number = target_course.match(last_matcher)?.[0]
 
   // @ts-ignore
   const target_chapter_url = await page.$eval('body > div.p-drawer-movable > main > div:nth-child(3) > div.l-course-show__right > div.p-course-show__buttons > a', a_link => a_link.href)
-  const special_offer_url = await special_offer_URLs(page)
+  const special_offer_url = pp(await special_offer_URLs(page))
 
   type CourseKind = 'daily_lesson_chapters' | 'prime_lessons'
   const course_kind = pp(target_chapter_url.match(/https:\/\/www.palmie.jp\/(.+)\//)?.[1]) as CourseKind// 'https://www.palmie.jp/prime_lessons/657'.match(/https:\/\/www.palmie.jp\/(.+)\//)[1] => "prime_lessons"
