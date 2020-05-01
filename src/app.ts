@@ -18,6 +18,9 @@ const course_number = target_course.match(last_matcher)?.[0]
   ] })
   const page = await browser.newPage();
 
+//login/////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
   await page.goto('https://www.palmie.jp/users/new', { waitUntil: ["networkidle2", "domcontentloaded"] })
   await page.click('.common-btn-pink')
   await page.type('input#session_email', process.env.DEF_USERNAME as string)
@@ -26,16 +29,17 @@ const course_number = target_course.match(last_matcher)?.[0]
   await page.waitFor('footer')
   await page.reload({ waitUntil: ["networkidle2", "domcontentloaded"] });
   await page.waitFor(3000)
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-  await page.goto(target_course)
+  await page.goto(target_course, { waitUntil: ["networkidle2", "domcontentloaded"] })
 
   await page.setRequestInterception(true);
   page.on('request', inter_req => {
     if (inter_req.url().includes('master.json')) { console.log(inter_req.url()) }
     inter_req.continue()
   })
-
-  await page.goto('https://www.palmie.jp/courses/67', { waitUntil: ["networkidle2", "domcontentloaded"] })
 
   debugger;
   // @ts-ignore
