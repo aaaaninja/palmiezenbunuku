@@ -35,10 +35,12 @@ export async function special_offer_URLs (page: Page) {
 }
 
 export function capture_video_URL (page: Page): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    await page.setRequestInterception(true);
     page.on('request', inter_req => {
       if (inter_req.url().includes('master.json')) { resolve(inter_req.url()) }
       inter_req.continue()
     })
+    await page.reload({ waitUntil: ["networkidle2", "domcontentloaded"] });
   })
 }
