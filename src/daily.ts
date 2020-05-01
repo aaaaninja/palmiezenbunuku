@@ -23,3 +23,10 @@ export async function slide_URLs(page: Page) {
   return daily_props.chapter.slide.url
 }
 
+export async function special_offer_URLs (page: Page) {
+  const isHTMLLinkElement = (el: any): el is HTMLLinkElement => el?.href
+
+  const special_offer = await page.$$eval('a', list => list.find(el => el.textContent == '講座資料・特典ファイルのダウンロード'))
+  return isHTMLLinkElement(special_offer) ? special_offer.href : ''
+}
+
