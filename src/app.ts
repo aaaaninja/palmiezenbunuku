@@ -59,7 +59,11 @@ const course_number = target_course.match(last_matcher)?.[0]
 
   const master_json = pp(await capture_video_URL(page))
 
-  debugger;
+  for (const chapter of video_urls) {
+    await page.goto(chapter, { waitUntil: ["networkidle2", "domcontentloaded"] })
+    const master_json = pp(await capture_video_URL(page))
+  }
+
   await browser.close();
 })()
 //  | xargs yarn run vanilla-clipper 'https://www.nnn.ed.nico/contents/guides/2158/content'
