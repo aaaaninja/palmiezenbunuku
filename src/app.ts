@@ -44,17 +44,17 @@ const course_number = target_course.match(last_matcher)?.[0]
 
   type CourseKind = 'daily_lesson_chapters' | 'prime_lessons'
   const course_kind = pp(target_chapter_url.match(/https:\/\/www.palmie.jp\/(.+)\//)?.[1]) as CourseKind// 'https://www.palmie.jp/prime_lessons/657'.match(/https:\/\/www.palmie.jp\/(.+)\//)[1] => "prime_lessons"
-  const video_urls = (() => {
+  await page.goto(pp(target_chapter_url), { waitUntil: ["networkidle2", "domcontentloaded"] })
+  const video_urls = await (async () => {
     switch (course_kind) {
       case 'daily_lesson_chapters':
-        'piyo'
+        return await video_URLs(page)
 
       case 'prime_lessons':
         return 'hoge'
     }
   })()
 
-  await page.goto(pp(target_chapter_url), { waitUntil: ["networkidle2", "domcontentloaded"] })
   debugger;
   await page.waitFor(90000)
 
