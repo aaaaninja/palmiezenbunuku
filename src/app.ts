@@ -35,12 +35,6 @@ const course_number = target_course.match(last_matcher)?.[0]
 
   await page.goto(target_course, { waitUntil: ["networkidle2", "domcontentloaded"] })
 
-  await page.setRequestInterception(true);
-  page.on('request', inter_req => {
-    if (inter_req.url().includes('master.json')) { console.log(inter_req.url()) }
-    inter_req.continue()
-  })
-
   debugger;
   // @ts-ignore
   const target_chapter_url = await page.$eval('body > div.p-drawer-movable > main > div:nth-child(3) > div.l-course-show__right > div.p-course-show__buttons > a', a_link => a_link.href)
@@ -48,6 +42,13 @@ const course_number = target_course.match(last_matcher)?.[0]
   debugger;
   await page.waitFor(90000)
 
+  await page.setRequestInterception(true);
+  page.on('request', inter_req => {
+    if (inter_req.url().includes('master.json')) { console.log(inter_req.url()) }
+    inter_req.continue()
+  })
+
+  debugger;
   await browser.close();
 })()
 //  | xargs yarn run vanilla-clipper 'https://www.nnn.ed.nico/contents/guides/2158/content'
