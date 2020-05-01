@@ -41,7 +41,18 @@ const course_number = target_course.match(last_matcher)?.[0]
   // @ts-ignore
   const target_chapter_url = await page.$eval('body > div.p-drawer-movable > main > div:nth-child(3) > div.l-course-show__right > div.p-course-show__buttons > a', a_link => a_link.href)
   const special_offer_url = await special_offer_URLs(page)
-  const course_kind: 'daily_lesson_chapters' | 'prime_lessons' = pp(target_chapter_url.match(/https:\/\/www.palmie.jp\/(.+)\//)?.[1]) // 'https://www.palmie.jp/prime_lessons/657'.match(/https:\/\/www.palmie.jp\/(.+)\//)[1] => "prime_lessons"
+
+  type CourseKind = 'daily_lesson_chapters' | 'prime_lessons'
+  const course_kind = pp(target_chapter_url.match(/https:\/\/www.palmie.jp\/(.+)\//)?.[1]) as CourseKind// 'https://www.palmie.jp/prime_lessons/657'.match(/https:\/\/www.palmie.jp\/(.+)\//)[1] => "prime_lessons"
+  const video_urls = (() => {
+    switch (course_kind) {
+      case 'daily_lesson_chapters':
+        'piyo'
+
+      case 'prime_lessons':
+        return 'hoge'
+    }
+  })()
 
   await page.goto(pp(target_chapter_url), { waitUntil: ["networkidle2", "domcontentloaded"] })
   debugger;
