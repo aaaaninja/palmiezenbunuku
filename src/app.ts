@@ -4,7 +4,8 @@ import spawnAsync from '@expo/spawn-async'
 function pp<T> (v: T) { console.log(v); return v }
 const last_matcher = /[^/]+$/
 
-import { special_offer_URLs, extract_data_react_props, video_URLs, slide_URLs, capture_video_URL } from './daily'
+import * as daily from './daily'
+import * as prime from './prime'
 
 const target_course = process.argv[2]
 const course_number = target_course.match(last_matcher)?.[0]
@@ -38,7 +39,7 @@ const course_number = target_course.match(last_matcher)?.[0]
 
   // @ts-ignore
   const target_chapter_url = await page.$eval('body > div.p-drawer-movable > main > div:nth-child(3) > div.l-course-show__right > div.p-course-show__buttons > a', a_link => a_link.href)
-  const special_offer_url = pp(await special_offer_URLs(page))
+  const special_offer_url = pp(await daily.special_offer_URLs(page))
 
   type CourseKind = 'daily_lesson_chapters' | 'prime_lessons'
   const course_kind = pp(target_chapter_url.match(/https:\/\/www.palmie.jp\/(.+)\//)?.[1]) as CourseKind// 'https://www.palmie.jp/prime_lessons/657'.match(/https:\/\/www.palmie.jp\/(.+)\//)[1] => "prime_lessons"
@@ -47,8 +48,8 @@ const course_number = target_course.match(last_matcher)?.[0]
   const [cur, video_urls, slide_url] = await (async () => { // 推論してくれない😠
     switch (course_kind) {
       case 'daily_lesson_chapters':
-        const [cur, ...urls] = pp(await video_URLs(page))
-        const slide_url = pp(await slide_URLs(page))
+        const [cur, ...urls] = pp(await daily.video_URLs(page))
+        const slide_url = pp(await daily.slide_URLs(page))
         return [cur, urls, slide_url]
 
       case 'prime_lessons':
@@ -60,11 +61,11 @@ const course_number = target_course.match(last_matcher)?.[0]
     }
   })()
 
-  const master_m3u8_url = pp(await capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
+  const master_m3u8_url = pp(await daily.capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
   const target_directory = `${course_number}`
   const c_number = (cur as string).match(last_matcher)?.[0] // 推論してくれない😠
   await fs.mkdir(target_directory, { recursive: true })
-  await fs.writeFile(`${target_directory}/info.txt`, JSON.stringify(await extract_data_react_props(page), null, 4))
+  await fs.writeFile(`${target_directory}/info.txt`, JSON.stringify(await daily.extract_data_react_props(page), null, 4))
 
   const [result_video, result_slide, result_offer] = await Promise.all([
     spawnAsync('youtube-dl', ['-o', `${target_directory}/${c_number}_%(format)s_%(resolution)s.mp4`, '-f', 'bestvideo+audio-high-audio/audio-medium-audio', master_m3u8_url]),
@@ -76,7 +77,7 @@ const course_number = target_course.match(last_matcher)?.[0]
     const c_number = chapter.match(last_matcher)?.[0] // こっちは as stringが偶然いらなくなった。推論しろ😠
 
     await page.goto(chapter, { waitUntil: ["networkidle2", "domcontentloaded"] })
-    const master_m3u8_url = pp(await capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
+    const master_m3u8_url = pp(await daily.capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
 
     const result_video = await spawnAsync('youtube-dl', ['-o', `${target_directory}/${c_number}_%(format)s_%(resolution)s.mp4`, '-f', 'bestvideo+audio-high-audio/audio-medium-audio', master_m3u8_url])
   }
