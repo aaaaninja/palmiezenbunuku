@@ -8,5 +8,10 @@
     "@types/node": "^13.13.4",
     "@types/puppeteer": "^2.0.1",
     "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "buildrun": "tsc && node dist/app.js",
+    "builddebugrun": "tsc && node --inspect --inspect-brk dist/app.js"
   }
 }
