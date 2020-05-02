@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "puppeteer": "^3.0.2",
-    "tish": "^0.0.8",
     "vanilla-clipper": "^0.2.1"
   },
   "devDependencies": {

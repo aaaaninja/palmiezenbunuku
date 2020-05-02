@@ -2495,13 +2495,6 @@ through@^2.3.8:
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-tish@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/tish/-/tish-0.0.8.tgz#0ff8051b0a0cb7782bee9b99fcff4081a1feea7c"
-  integrity sha512-egKS6fnwBUidelVAK8OWzytBbGNViWJgZ0brW+QaNUwR+Dvbs+adMpk85zaMwGfxvOGJl50otQ3EKhUWvRHGLg==
-  dependencies:
-    debug "^4.1.1"
-
 tldjs@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tldjs/-/tldjs-2.3.1.tgz#cf09c3eb5d7403a9e214b7d65f3cf9651c0ab039"
