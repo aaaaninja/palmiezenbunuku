@@ -47,14 +47,16 @@ const course_number = target_course.match(last_matcher)?.[0]
   await page.goto(pp(target_chapter_url), { waitUntil: ["networkidle2", "domcontentloaded"] })
   const [cur, video_urls, slide_url] = await (async () => { // 推論してくれない😠
     switch (course_kind) {
-      case 'daily_lesson_chapters':
+      case 'daily_lesson_chapters': {
         const [cur, ...urls] = pp(await daily.video_URLs(page))
         const slide_url = pp(await daily.slide_URLs(page))
         return [cur, urls, slide_url]
-
-      case 'prime_lessons':
-        return 'hoge'
-
+      }
+      case 'prime_lessons': {
+        const [cur, ...urls] = pp(await prime.video_URLs(page))
+        const slide_url = pp(await prime.slide_URLs(page))
+        return [cur, urls, slide_url]
+      }
       default:
         const _: never = course_kind
         return _
