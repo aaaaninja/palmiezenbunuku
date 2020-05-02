@@ -61,11 +61,11 @@ const course_number = target_course.match(last_matcher)?.[0]
     }
   })()
 
-  const master_json = pp(await capture_video_URL(page))
+  const master_m3u8_url = pp(await capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
 
   for (const chapter of video_urls) {
     await page.goto(chapter, { waitUntil: ["networkidle2", "domcontentloaded"] })
-    const master_json = pp(await capture_video_URL(page))
+    const master_m3u8_url = pp(await capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
   }
 
   await browser.close();
