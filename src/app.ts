@@ -9,8 +9,6 @@ const target_course = process.argv[2]
 const course_number = target_course.match(last_matcher)?.[0]
 
 ;(async () => {
-  await fs.mkdir(`${course_number}`, { recursive: true }) // 保存用フォルダ
-
   const browser = await puppeteer.launch({ headless: false, devtools: true, defaultViewport: { width: 1600, height: 1200 }, args: [
     '--no-sandbox',
     '--disable-setuid-sandbox',
@@ -62,6 +60,9 @@ const course_number = target_course.match(last_matcher)?.[0]
   })()
 
   const master_m3u8_url = pp(await capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
+    // @ts-ignore
+  const target_directory = `${course_number}/${cur.match(last_matcher)[0]}`
+  await fs.mkdir(target_directory, { recursive: true })
 
   for (const chapter of video_urls) {
     await page.goto(chapter, { waitUntil: ["networkidle2", "domcontentloaded"] })
