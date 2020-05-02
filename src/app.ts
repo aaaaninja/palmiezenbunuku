@@ -63,6 +63,7 @@ const course_number = target_course.match(last_matcher)?.[0]
     // @ts-ignore
   const target_directory = `${course_number}/${cur.match(last_matcher)[0]}`
   await fs.mkdir(target_directory, { recursive: true })
+  await fs.writeFile(`${course_number}/info.txt`, JSON.stringify(await extract_data_react_props(page), null, 4))
 
   for (const chapter of video_urls) {
     await page.goto(chapter, { waitUntil: ["networkidle2", "domcontentloaded"] })
