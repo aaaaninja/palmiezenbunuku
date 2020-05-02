@@ -73,8 +73,12 @@ const course_number = target_course.match(last_matcher)?.[0]
   ])
 
   for (const chapter of video_urls) {
+    const c_number = chapter.match(last_matcher)?.[0] // こっちは as stringが偶然いらなくなった。推論しろ😠
+
     await page.goto(chapter, { waitUntil: ["networkidle2", "domcontentloaded"] })
     const master_m3u8_url = pp(await capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
+
+    const result_video = await spawnAsync('youtube-dl', ['-o', `${target_directory}/${c_number}_%(format)s_%(resolution)s.mp4`, '-f', 'bestvideo+audio-high-audio/audio-medium-audio', master_m3u8_url])
   }
 
   await browser.close();
