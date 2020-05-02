@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer'
 import { promises as fs } from 'fs'
+import spawnAsync from '@expo/spawn-async'
 function pp<T> (v: T) { console.log(v); return v }
 const last_matcher = /[^/]+$/
 
@@ -64,6 +65,12 @@ const course_number = target_course.match(last_matcher)?.[0]
   const target_directory = `${course_number}/${cur.match(last_matcher)[0]}`
   await fs.mkdir(target_directory, { recursive: true })
   await fs.writeFile(`${course_number}/info.txt`, JSON.stringify(await extract_data_react_props(page), null, 4))
+
+  const [result_video, result_slide, result_offer] = await Promise.all([
+    spawnAsync('youtube-dl', ['-o', `${target_directory}/%(format)s_%(resolution)s.mp4`, '-f', 'bestvideo+audio-high-audio/audio-medium-audio', master_m3u8_url]),
+    spawnAsync('bash', ['get_slides.sh', (slide_url as string).replace(last_matcher,''), target_directory]).catch(e => e),
+    special_offer_url ? spawnAsync('wget', [special_offer_url, '-P', `${course_number}`]) : spawnAsync('echo', ['offerはなかったでござる'])
+  ])
 
   for (const chapter of video_urls) {
     await page.goto(chapter, { waitUntil: ["networkidle2", "domcontentloaded"] })

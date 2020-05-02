@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@expo/spawn-async": "^1.5.0",
     "puppeteer": "^3.0.2",
     "vanilla-clipper": "^0.2.1"
   },
