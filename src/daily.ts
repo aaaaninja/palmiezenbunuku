@@ -28,10 +28,10 @@ export async function slide_URLs(page: Page) {
 }
 
 export async function special_offer_URLs (page: Page) {
-  const isHTMLLinkElement = (el: any): el is HTMLLinkElement => el?.href
-
-  const special_offer = await page.$$eval('a', list => list.find(el => el.textContent == '講座資料・特典ファイルのダウンロード'))
-  return isHTMLLinkElement(special_offer) ? special_offer.href : ''
+  return await page.$$eval('a', list => {
+    const offer_link = list.find(el => el.textContent === '講座資料・特典ファイルのダウンロード') as HTMLLinkElement | undefined
+    return offer_link ? offer_link.href : ''
+  })
 }
 
 export function capture_video_URL (page: Page): Promise<string> {
