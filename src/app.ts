@@ -25,8 +25,8 @@ const course_number = target_course.match(last_matcher)?.[0]
 ////////////////////////////////////////////////////////////////////////////////
   await page.goto('https://www.palmie.jp/users/new', { waitUntil: ["networkidle2", "domcontentloaded"] })
   await page.click('.common-btn-pink')
-  await page.type('input#session_email', process.env.DEF_USERNAME as string)
-  await page.type('input#session_password', process.env.DEF_PASSWORD as string)
+  await page.type('input#session_email', process.env.DEF_USERNAME || '')
+  await page.type('input#session_password', process.env.DEF_PASSWORD || '')
   await page.click('#main-body > div.popup-user-login-section > div > div > div.popup-user-login-content-inner > div.popup-user-form > form > div > button')
   await page.waitFor('footer')
   await page.reload({ waitUntil: ["networkidle2", "domcontentloaded"] });
@@ -65,13 +65,13 @@ const course_number = target_course.match(last_matcher)?.[0]
 
   const master_m3u8_url = pp(await daily.capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
   const target_directory = `${course_number}`
-  const c_number = (cur as string).match(last_matcher)?.[0]
+  const c_number = cur.match(last_matcher)?.[0]
   await fs.mkdir(target_directory, { recursive: true })
   await fs.writeFile(`${target_directory}/info.txt`, JSON.stringify(await daily.extract_data_react_props(page), null, 4))
 
   const [result_video, result_slide, result_offer] = await Promise.all([
     spawnAsync('youtube-dl', ['-o', `${target_directory}/${c_number}_%(format)s_%(resolution)s.mp4`, '-f', 'bestvideo+audio-high-audio/bestvideo+audio-medium-audio ', master_m3u8_url]),
-    spawnAsync('bash', ['get_slides.sh', (slide_url as string).replace(last_matcher,''), target_directory]).catch(e => e),
+    spawnAsync('bash', ['get_slides.sh', slide_url.replace(last_matcher,''), target_directory]).catch(e => e),
     special_offer_url ? spawnAsync('wget', [special_offer_url, '-P', target_directory]) : spawnAsync('echo', ['offerはなかったでござる'])
   ])
 
