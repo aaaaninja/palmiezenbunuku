@@ -45,7 +45,7 @@ const course_number = target_course.match(last_matcher)?.[0]
   const course_kind = pp(target_chapter_url.match(/https:\/\/www.palmie.jp\/(.+)\//)?.[1]) as CourseKind// 'https://www.palmie.jp/prime_lessons/657'.match(/https:\/\/www.palmie.jp\/(.+)\//)[1] => "prime_lessons"
 
   await page.goto(pp(target_chapter_url), { waitUntil: ["networkidle2", "domcontentloaded"] })
-  const [cur, video_urls, slide_url] = await (async () => { // 推論してくれない😠
+  const [cur, video_urls, slide_url] = await (async (): Promise<[string, string[], string]> => {
     switch (course_kind) {
       case 'daily_lesson_chapters': {
         const [cur, ...urls] = pp(await daily.video_URLs(page))
@@ -65,7 +65,7 @@ const course_number = target_course.match(last_matcher)?.[0]
 
   const master_m3u8_url = pp(await daily.capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
   const target_directory = `${course_number}`
-  const c_number = (cur as string).match(last_matcher)?.[0] // 推論してくれない😠
+  const c_number = (cur as string).match(last_matcher)?.[0]
   await fs.mkdir(target_directory, { recursive: true })
   await fs.writeFile(`${target_directory}/info.txt`, JSON.stringify(await daily.extract_data_react_props(page), null, 4))
 
@@ -76,7 +76,7 @@ const course_number = target_course.match(last_matcher)?.[0]
   ])
 
   for (const chapter of video_urls) {
-    const c_number = chapter.match(last_matcher)?.[0] // こっちは as stringが偶然いらなくなった。推論しろ😠
+    const c_number = chapter.match(last_matcher)?.[0]
 
     await page.goto(chapter, { waitUntil: ["networkidle2", "domcontentloaded"] })
     const master_m3u8_url = pp(await daily.capture_video_URL(page)).replace(last_matcher, 'master.m3u8')
